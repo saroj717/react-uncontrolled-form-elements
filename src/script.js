@@ -1,29 +1,66 @@
 class UncontrolledForm extends React.Component {
   constructor(props) {
     super(props);
+    this.inputRef = React.createRef();
+    this.checkboxRef = React.createRef();
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
-    console.log(`form submitted: `);
     event.preventDefault();
+    const name = this.inputRef.current.value;
+    const subscribe = this.checkboxRef.current.checked;
+    console.log(`form submitted.\nName: ${name}\nSubscrieb: ${subscribe}`);
   }
 
   render() {
-    return(
+    return (
       <form onSubmit={this.handleSubmit}>
         <label>
           Name:
-          <imput type="text"/>
+          <input type="text" ref={this.inputRef} defaultValue="John" />
         </label>
-        <imput type="submit" value="Submit" />
+        <label>
+          Subscribe:
+          <input type="checkbox" ref={this.checkboxRef} defaultChecked={true} />
+        </label>
+        <input type="submit" value="Submit" />
       </form>
-    )
+    );
   }
 }
 
+class FileForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fileRef = React.createRef(); // use .createRef() to create a ref object
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const file = this.fileRef.current.files[0].name;
+    console.log(`form submitted.\nfile: ${file}`);
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          File:
+          <input type="file" ref={this.fileRef} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
 
 const container = document.getElementById('root');
-const root = ReactDom.createRoot(container);
-root.render(<UncontrolledForm/>);
+const root = ReactDOM.createRoot(container);
+root.render(<div>
+  <UncontrolledForm />
+  <FileForm />
+</div>);
